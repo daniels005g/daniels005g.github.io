@@ -1,42 +1,20 @@
 <?php
 namespace Controlador;
 
-require_once 'modelo/Datos.php';
 use Modelo\Datos;
 
 class CarritoController {
     
     public function __construct() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
         if (!isset($_SESSION['carrito'])) {
             $_SESSION['carrito'] = [];
         }
     }
 
-    public function manejarPeticion() {
-        $accion = $_GET['accion'] ?? 'listar';
-
-        switch ($accion) {
-            case 'agregar':
-                $this->agregarAlCarrito();
-                break;
-            case 'vaciar':
-                $this->vaciarCarrito();
-                break;
-            case 'listar':
-            default:
-                $this->mostrarTienda();
-                break;
-        }
-    }
-
-    private function agregarAlCarrito() {
+    public function agregarAlCarrito() {
         $id = intval($_GET['id'] ?? 0);
         $catalogo = Datos::getCatalogo();
 
-        // Validamos que el artículo exista en nuestro modelo de datos
         if (isset($catalogo[$id])) {
             if (isset($_SESSION['carrito'][$id])) {
                 $_SESSION['carrito'][$id]['cantidad']++;
@@ -48,22 +26,22 @@ class CarritoController {
                 ];
             }
         }
-        // Redirección limpia (Patrón Post-Redirect-Get)
-        header('Location: index.php');
+        // Redirige al enrutador principal en su acción por defecto (listar)
+        header('Location: index.php?controlador=carrito&accion=listar');
         exit();
     }
 
-    private function vaciarCarrito() {
+    public function vaciarCarrito() {
         $_SESSION['carrito'] = [];
-        header('Location: index.php');
+        header('Location: index.php?controlador=carrito&accion=listar');
         exit();
     }
 
-    private function mostrarTienda() {
-        // Obtenemos los artículos del Modelo
+    public function mostrarTienda() {
+        // Pedir datos al Modelo
         $productos = Datos::getCatalogo();
         
-        // El controlador calcula los totales antes de enviarlos a la vista
+        // Calcular variables de negocio (Totales + IGV)
         $subtotalNeto = 0.0;
         foreach ($_SESSION['carrito'] as $item) {
             $subtotalNeto += $item['precio'] * $item['cantidad'];
@@ -72,7 +50,7 @@ class CarritoController {
         $igv = $subtotalNeto * 0.18;
         $totalPagar = $subtotalNeto + $igv;
 
-        // Incluimos la Vista para renderizar la pantalla
+        // Cargar la Vista correspondiente
         require_once 'vista/tienda.php';
     }
 }

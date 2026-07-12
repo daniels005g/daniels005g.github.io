@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Tienda Web PHP - Construcion de Software</title>
+    <title>Tienda Web PHP - Front Controller MVC</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background-color: #f8f9fa; color: #333; }
         h2 { color: #1F4E78; border-bottom: 2px solid #1F4E78; padding-bottom: 10px; }
@@ -21,7 +21,7 @@
 </head>
 <body>
 
-    <h2>Sistema de Ventas - Arquitectura MVC (Sin Base de Datos)</h2>
+    <h2>Sistema Controlado desde Index (Front Controller)</h2>
 
     <div class="container">
         <!-- Catálogo de Productos -->
@@ -42,7 +42,8 @@
                         <td><strong><?= $prod->id ?></strong></td>
                         <td><?= htmlspecialchars($prod->nombre) ?></td>
                         <td>S/. <?= number_format($prod->precio, 2) ?></td>
-                        <td><a class="btn" href="index.php?accion=agregar&id=<?= $prod->id ?>">Agregar</a></td>
+                        <!-- El enlace va hacia index pasándole los parámetros correspondientes -->
+                        <td><a class="btn" href="index.php?controlador=carrito&accion=agregar&id=<?= $prod->id ?>">Agregar</a></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -54,7 +55,7 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <h3 style="color: #2E74B5; margin: 0;">Resumen del Carrito</h3>
                 <?php if (!empty($_SESSION['carrito'])): ?>
-                    <a class="btn btn-danger" href="index.php?accion=vaciar">Vaciar Carrito</a>
+                    <a class="btn btn-danger" href="index.php?controlador=carrito&accion=vaciar">Vaciar Carrito</a>
                 <?php endif; ?>
             </div>
 
@@ -85,7 +86,6 @@
                 </tbody>
             </table>
 
-            <!-- Totales calculados en el Controlador -->
             <div class="totales">
                 <p><strong>Subtotal (Valor Venta):</strong> S/. <?= number_format($subtotalNeto, 2) ?></p>
                 <p style="color: #c00000;"><strong>IGV (18.00%):</strong> S/. <?= number_format($igv, 2) ?></p>
