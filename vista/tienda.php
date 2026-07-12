@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Tienda Web PHP - Front Controller MVC</title>
+    <title>Evaluacion Final</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background-color: #f8f9fa; color: #333; }
         h2 { color: #1F4E78; border-bottom: 2px solid #1F4E78; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
