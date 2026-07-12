@@ -26,7 +26,19 @@ class CarritoController {
                 ];
             }
         }
-        // Redirige al enrutador principal en su acción por defecto (listar)
+        header('Location: index.php?controlador=carrito&accion=listar');
+        exit();
+    }
+
+    // Nueva función para procesar la creación de artículos
+    public function guardarNuevoArticulo() {
+        $nombre = trim($_POST['nombre'] ?? '');
+        $precio = floatval($_POST['precio'] ?? 0);
+
+        if (!empty($nombre) && $precio > 0) {
+            Datos::agregarNuevoArticulo($nombre, $precio);
+        }
+        
         header('Location: index.php?controlador=carrito&accion=listar');
         exit();
     }
@@ -38,10 +50,8 @@ class CarritoController {
     }
 
     public function mostrarTienda() {
-        // Pedir datos al Modelo
         $productos = Datos::getCatalogo();
         
-        // Calcular variables de negocio (Totales + IGV)
         $subtotalNeto = 0.0;
         foreach ($_SESSION['carrito'] as $item) {
             $subtotalNeto += $item['precio'] * $item['cantidad'];
@@ -50,7 +60,6 @@ class CarritoController {
         $igv = $subtotalNeto * 0.18;
         $totalPagar = $subtotalNeto + $igv;
 
-        // Cargar la Vista correspondiente
         require_once 'vista/tienda.php';
     }
 }
