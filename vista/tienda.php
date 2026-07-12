@@ -56,7 +56,7 @@
 <body>
 
     <h2>
-        <span>Sistema Integrado de Ventas</span>
+        <span>EVALUACION FINAL - CONSTRUCCION DE SOFTWARE</span>
         <button class="btn btn-calc" onclick="toggleModal(true)">+ Calculadora</button>
     </h2>
 
